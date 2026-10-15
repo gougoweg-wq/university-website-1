@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Northbridge University — explore courses, save favorites, and register for the Fall 2026 semester.">
+  <title>Northbridge University</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #13294b;
+      --navy-2: #1f3d6d;
+      --navy-3: #2c5596;
+      --gold: #e2a83a;
+      --gold-soft: #fbe9c4;
+      --gold-ink: #7a4f00;
+      --bg: #f5f6fa;
+      --surface: #ffffff;
+      --surface-2: #eef1f7;
+      --text: #1b2333;
+      --muted: #5d677a;
+      --border: #dfe4ee;
+      --accent: #1f3d6d;
+      --success: #1f8a55;
+      --success-bg: rgba(31, 138, 85, 0.1);
+      --error: #c0392b;
+      --radius: 16px;
+      --shadow: 0 6px 24px rgba(19, 41, 75, 0.08);
+      --shadow-lg: 0 18px 40px rgba(19, 41, 75, 0.16);
+      color-scheme: light;
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #0e1524;
+      --surface: #16203a;
+      --surface-2: #1d2a48;
+      --text: #e8ecf5;
+      --muted: #a2adc2;
+      --border: #2a3858;
+      --accent: #8fb3ff;
+      --gold-soft: rgba(226, 168, 58, 0.18);
+      --gold-ink: #f3c46a;
+      --success: #4cc68a;
+      --success-bg: rgba(76, 198, 138, 0.12);
+      --error: #ff7b6b;
+      --shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+      --shadow-lg: 0 18px 40px rgba(0, 0, 0, 0.45);
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.modal-open { overflow: hidden; }
+
+    h1, h2, h3 { font-family: "Fraunces", Georgia, serif; line-height: 1.2; }
+
+    a { color: inherit; text-decoration: none; }
+
+    button { font: inherit; }
+
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+
+    /* ---------- Header ---------- */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(19, 41, 75, 0.94);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      box-shadow: 0 2px 14px rgba(0, 0, 0, 0.18);
+    }
+
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 70px; gap: 16px; }
+
+    .logo { display: flex; align-items: center; gap: 10px; font-family: "Fraunces", Georgia, serif; font-size: 1.25rem; font-weight: 700; white-space: nowrap; }
+
+    .logo-mark {
+      display: grid; place-items: center;
+      width: 40px; height: 40px; border-radius: 11px;
+      background: var(--gold); color: var(--navy); font-size: 1.15rem;
+    }
+
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+
+    .nav-links { display: flex; gap: 4px; list-style: none; }
+
+    .nav-links a {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 14px; border-radius: 9px;
+      font-weight: 500; font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.82);
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-links a:hover, .nav-links a.active { background: rgba(255, 255, 255, 0.13); color: #fff; }
+
+    .badge {
+      min-width: 20px; padding: 0 6px; border-radius: 999px;
+      background: var(--gold); color: var(--navy);
+      font-size: 0.75rem; font-weight: 700; text-align: center; line-height: 20px;
+    }
+
+    .icon-btn {
+      display: grid; place-items: center;
+      width: 40px; height: 40px; border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: transparent; color: #fff; font-size: 1.15rem; cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .icon-btn:hover { background: rgba(255, 255, 255, 0.12); }
+
+    .menu-toggle { display: none; }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 55%, var(--navy-3) 100%);
+      color: #fff;
+      padding: 96px 0 120px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before, .hero::after {
+      content: ""; position: absolute; border-radius: 50%; pointer-events: none;
+    }
+
+    .hero::before { right: -140px; top: -140px; width: 460px; height: 460px; background: radial-gradient(circle, rgba(226, 168, 58, 0.38), transparent 70%); }
+    .hero::after { left: -100px; bottom: -180px; width: 380px; height: 380px; background: radial-gradient(circle, rgba(143, 179, 255, 0.25), transparent 70%); }
+
+    .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1.3fr 1fr; gap: 48px; align-items: center; }
+
+    .eyebrow {
+      display: inline-block; padding: 6px 14px; border-radius: 999px;
+      background: rgba(226, 168, 58, 0.18); color: var(--gold);
+      font-weight: 600; font-size: 0.82rem; letter-spacing: 0.05em; text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 { font-size: clamp(2.3rem, 5vw, 3.7rem); margin-bottom: 18px; }
+    .hero h1 em { font-style: normal; color: var(--gold); }
+    .hero p { font-size: 1.15rem; color: rgba(255, 255, 255, 0.85); margin-bottom: 32px; max-width: 580px; }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+
+    .hero-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 20px;
+      padding: 26px;
+      backdrop-filter: blur(6px);
+    }
+
+    .hero-card h3 { font-size: 1.2rem; margin-bottom: 14px; }
+    .hero-card ul { list-style: none; display: grid; gap: 12px; }
+    .hero-card li { display: flex; gap: 12px; align-items: flex-start; font-size: 0.95rem; color: rgba(255, 255, 255, 0.88); }
+    .hero-card .date {
+      flex-shrink: 0; width: 52px; text-align: center; border-radius: 10px;
+      background: var(--gold); color: var(--navy); font-weight: 700; font-size: 0.75rem; line-height: 1.2; padding: 6px 4px;
+    }
+    .hero-card .date b { display: block; font-size: 1.15rem; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 22px; border-radius: 11px; border: 2px solid transparent;
+      font-weight: 600; cursor: pointer;
+      transition: transform 0.15s, background 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary { background: var(--gold); color: var(--navy); }
+    .btn-primary:hover { background: #f0b84b; box-shadow: 0 8px 20px rgba(226, 168, 58, 0.35); }
+
+    .btn-outline { border-color: rgba(255, 255, 255, 0.5); color: #fff; background: transparent; }
+    .btn-outline:hover { border-color: #fff; background: rgba(255, 255, 255, 0.08); }
+
+    .btn-dark { background: var(--navy); color: #fff; }
+    .btn-dark:hover { background: var(--navy-2); }
+    :root[data-theme="dark"] .btn-dark { background: var(--gold); color: var(--navy); }
+    :root[data-theme="dark"] .btn-dark:hover { background: #f0b84b; }
+
+    .btn-ghost { background: transparent; color: var(--text); border-color: var(--border); }
+    .btn-ghost:hover { background: var(--surface-2); }
+
+    /* ---------- Stats ---------- */
+    .stats {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;
+      margin-top: -60px; position: relative; z-index: 2;
+    }
+
+    .stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px; text-align: center; }
+    .stat strong { display: block; font-family: "Fraunces", Georgia, serif; font-size: 2rem; color: var(--accent); }
+    .stat span { color: var(--muted); font-size: 0.92rem; }
+
+    /* ---------- Sections ---------- */
+    section { padding: 84px 0; }
+
+    .section-head { text-align: center; max-width: 660px; margin: 0 auto 40px; }
+    .section-head .kicker { display: block; color: var(--gold-ink); font-weight: 700; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+    .section-head h2 { font-size: clamp(1.9rem, 3.6vw, 2.5rem); color: var(--accent); margin-bottom: 10px; }
+    .section-head p { color: var(--muted); }
+
+    .alt { background: var(--surface); }
+
+    .kicker-inline { display: block; color: var(--gold-ink); font-weight: 700; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+
+    /* ---------- Catalog toolbar ---------- */
+    .toolbar { display: grid; gap: 16px; margin-bottom: 26px; }
+
+    .search-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+    .search-bar {
+      flex: 1 1 420px; max-width: 620px;
+      display: flex; align-items: center; gap: 10px;
+      background: var(--surface); border: 2px solid var(--border); border-radius: 12px;
+      padding: 4px 6px 4px 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .search-bar:focus-within { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(31, 61, 109, 0.14); }
+
+    .search-bar input {
+      flex: 1; min-width: 0; border: 0; outline: none;
+      font: inherit; font-size: 1rem; padding: 10px 0;
+      background: transparent; color: var(--text);
+    }
+
+    .search-bar input::-webkit-search-cancel-button { display: none; }
+
+    .clear-search {
+      border: 0; background: var(--surface-2); color: var(--muted);
+      width: 30px; height: 30px; border-radius: 8px; cursor: pointer; display: none;
+    }
+
+    .clear-search.visible { display: block; }
+
+    .sort-select {
+      padding: 0 14px; height: 52px; border-radius: 12px;
+      border: 2px solid var(--border); background: var(--surface); color: var(--text);
+      font: inherit; cursor: pointer;
+    }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+
+    .chip {
+      padding: 7px 16px; border-radius: 999px;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      font-size: 0.9rem; font-weight: 500; cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .chip:hover { border-color: var(--accent); }
+    .chip[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
+    :root[data-theme="dark"] .chip[aria-pressed="true"] { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+
+    .results-info { text-align: center; color: var(--muted); font-size: 0.92rem; }
+
+    /* ---------- Course grid ---------- */
+    .course-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+
+    .course-card {
+      display: flex; flex-direction: column;
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      overflow: hidden; box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: fadeUp 0.35s ease both;
+    }
+
+    .course-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+    .course-banner {
+      position: relative; height: 104px;
+      display: flex; align-items: flex-end; justify-content: space-between;
+      padding: 14px 18px; color: #fff; font-size: 2.1rem;
+    }
+
+    .course-code { font-family: "Inter", sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; background: rgba(0, 0, 0, 0.24); padding: 4px 10px; border-radius: 999px; }
+
+    .fav-toggle {
+      position: absolute; top: 12px; right: 12px;
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 0; background: rgba(255, 255, 255, 0.92); color: #c2185b;
+      font-size: 1.15rem; cursor: pointer; display: grid; place-items: center;
+      transition: transform 0.15s;
+    }
+
+    .fav-toggle:hover { transform: scale(1.1); }
+
+    .course-body { padding: 18px 18px 20px; display: flex; flex-direction: column; flex: 1; }
+    .course-dept { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gold-ink); margin-bottom: 4px; }
+    .course-body h3 { font-size: 1.2rem; color: var(--accent); margin-bottom: 8px; }
+    .course-body p { color: var(--muted); font-size: 0.93rem; margin-bottom: 14px; flex: 1; }
+
+    .course-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; font-size: 0.8rem; }
+    .course-meta span { background: var(--surface-2); border: 1px solid var(--border); padding: 3px 10px; border-radius: 999px; }
+
+    .seats { font-size: 0.82rem; color: var(--muted); margin-bottom: 14px; }
+    .seats-bar { height: 6px; border-radius: 999px; background: var(--surface-2); overflow: hidden; margin-top: 5px; }
+    .seats-bar span { display: block; height: 100%; background: var(--success); border-radius: 999px; }
+    .seats.low .seats-bar span { background: var(--gold); }
+
+    .course-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .course-actions .btn { padding: 10px 10px; font-size: 0.88rem; }
+    .course-actions .btn-fav { grid-column: 1 / -1; }
+
+    .btn-fav { background: var(--gold-soft); color: var(--gold-ink); }
+    .btn-fav:hover { filter: brightness(0.97); }
+    .btn-fav[aria-pressed="true"] { background: var(--success-bg); color: var(--success); }
+
+    .empty-state {
+      grid-column: 1 / -1; text-align: center; padding: 48px 20px;
+      background: var(--surface); border: 2px dashed var(--border); border-radius: var(--radius); color: var(--muted);
+    }
+
+    .empty-state .icon { font-size: 2.4rem; margin-bottom: 8px; }
+    .empty-state .btn { margin-top: 14px; }
+
+    /* ---------- Favorites ---------- */
+    .favorites-head { display: flex; justify-content: flex-end; max-width: 820px; margin: 0 auto 12px; }
+
+    .favorites-list { list-style: none; display: grid; gap: 12px; max-width: 820px; margin: 0 auto; }
+
+    .favorite-item {
+      display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      padding: 14px 18px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+      animation: fadeUp 0.3s ease both;
+    }
+
+    .favorite-item .fi-icon { font-size: 1.6rem; }
+    .favorite-item .fi-main { display: flex; align-items: center; gap: 14px; min-width: 0; }
+    .favorite-item strong { color: var(--accent); }
+    .favorite-item small { display: block; color: var(--muted); }
+    .favorite-item .fi-actions { display: flex; gap: 8px; flex-shrink: 0; }
+    .favorite-item .btn { padding: 8px 14px; font-size: 0.85rem; }
+
+    .btn-remove { background: transparent; color: var(--error); border-color: color-mix(in srgb, var(--error) 35%, transparent); }
+    .btn-remove:hover { background: color-mix(in srgb, var(--error) 10%, transparent); }
+
+    /* ---------- Registration ---------- */
+    .register-wrap { display: grid; grid-template-columns: 1fr 1.2fr; gap: 44px; align-items: start; }
+
+    .register-info h2 { font-size: clamp(1.9rem, 3.6vw, 2.5rem); color: var(--accent); margin-bottom: 14px; }
+    .register-info p { color: var(--muted); margin-bottom: 20px; }
+    .register-info ul { list-style: none; display: grid; gap: 12px; }
+    .register-info li { display: flex; gap: 10px; align-items: flex-start; }
+    .register-info li::before { content: "✓"; color: var(--success); font-weight: 700; }
+
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 28px; }
+    .step { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; font-size: 0.85rem; color: var(--muted); }
+    .step b { display: block; font-family: "Fraunces", Georgia, serif; font-size: 1.4rem; color: var(--gold-ink); }
+
+    .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 30px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.93rem; }
+    .form-group label .opt { color: var(--muted); font-weight: 400; }
+
+    .form-group input,
+    .form-group select {
+      width: 100%; padding: 12px 14px;
+      border: 2px solid var(--border); border-radius: 10px;
+      font: inherit; background: var(--bg); color: var(--text);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(31, 61, 109, 0.14); }
+
+    .form-group.invalid input,
+    .form-group.invalid select { border-color: var(--error); }
+
+    .radio-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .radio-row label {
+      flex: 1; min-width: 110px; display: flex; align-items: center; gap: 8px;
+      padding: 10px 12px; border: 2px solid var(--border); border-radius: 10px; cursor: pointer; font-weight: 500; margin: 0;
+    }
+    .radio-row label:has(input:checked) { border-color: var(--accent); background: var(--surface-2); }
+    .radio-row input { width: auto; accent-color: var(--navy-2); }
+
+    .check-label { display: flex; gap: 10px; align-items: flex-start; font-weight: 400 !important; font-size: 0.9rem !important; cursor: pointer; }
+    .check-label input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--navy-2); flex-shrink: 0; }
+
+    .error-msg { display: none; color: var(--error); font-size: 0.85rem; margin-top: 5px; }
+    .form-group.invalid .error-msg { display: block; }
+
+    .form-card .submit-btn { width: 100%; padding: 14px; font-size: 1rem; }
+
+    .success-box {
+      display: none; margin-top: 18px; padding: 16px 18px; border-radius: 12px;
+      background: var(--success-bg); border: 1px solid color-mix(in srgb, var(--success) 40%, transparent); color: var(--success);
+    }
+
+    .success-box.show { display: block; animation: fadeUp 0.3s ease both; }
+    .success-box dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin-top: 8px; font-size: 0.92rem; color: var(--text); }
+    .success-box dt { font-weight: 600; }
+    .success-box dd { word-break: break-word; }
+
+    .registrations { margin-top: 22px; }
+    .registrations h3 { font-size: 1.05rem; color: var(--accent); margin-bottom: 10px; }
+    .registrations ul { list-style: none; display: grid; gap: 8px; }
+    .registrations li { display: flex; justify-content: space-between; gap: 10px; font-size: 0.88rem; padding: 10px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; }
+    .registrations li span:last-child { color: var(--muted); text-align: right; }
+
+    /* ---------- Testimonials ---------- */
+    .testimonials { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .quote { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+    .quote p { font-size: 0.98rem; margin-bottom: 16px; }
+    .quote p::before { content: "“"; font-family: "Fraunces", Georgia, serif; font-size: 2.4rem; line-height: 0; vertical-align: -0.45em; color: var(--gold); margin-right: 4px; }
+    .quote footer { display: flex; align-items: center; gap: 12px; }
+    .avatar { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; color: #fff; }
+    .quote small { display: block; color: var(--muted); }
+
+    /* ---------- FAQ ---------- */
+    .faq { max-width: 780px; margin: 0 auto; display: grid; gap: 12px; }
+    .faq details { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 4px 20px; }
+    .faq summary { cursor: pointer; font-weight: 600; padding: 14px 0; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; font-size: 1.3rem; color: var(--gold-ink); transition: transform 0.2s; }
+    .faq details[open] summary::after { transform: rotate(45deg); }
+    .faq details p { color: var(--muted); padding-bottom: 16px; }
+
+    /* ---------- Modal ---------- */
+    .modal-backdrop {
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(8, 14, 28, 0.6); backdrop-filter: blur(3px);
+      display: none; align-items: center; justify-content: center; padding: 16px;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal {
+      width: 100%; max-width: 560px; max-height: calc(100vh - 32px); overflow-y: auto;
+      background: var(--surface); border-radius: 20px; box-shadow: var(--shadow-lg);
+      animation: fadeUp 0.25s ease both;
+    }
+
+    .modal .course-banner { height: 120px; border-radius: 20px 20px 0 0; }
+    .modal-close { position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; border-radius: 50%; border: 0; background: rgba(255, 255, 255, 0.92); color: #13294b; font-size: 1.1rem; cursor: pointer; }
+    .modal-body { padding: 24px; }
+    .modal-body h3 { font-size: 1.5rem; color: var(--accent); margin-bottom: 8px; }
+    .modal-body > p { color: var(--muted); margin-bottom: 16px; }
+    .modal-body h4 { font-size: 0.95rem; margin: 16px 0 8px; }
+    .modal-body ul { padding-left: 20px; color: var(--muted); }
+    .modal-actions { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+    .modal-actions .btn { flex: 1; }
+
+    /* ---------- Footer ---------- */
+    .site-footer { background: var(--navy); color: rgba(255, 255, 255, 0.75); padding: 56px 0 28px; font-size: 0.92rem; }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 30px; margin-bottom: 36px; }
+    .site-footer .logo { color: #fff; margin-bottom: 12px; }
+    .site-footer h4 { color: #fff; font-size: 0.95rem; margin-bottom: 12px; }
+    .site-footer ul { list-style: none; display: grid; gap: 8px; }
+    .site-footer a:hover { color: #fff; }
+    .footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.12); padding-top: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+
+    /* ---------- Toast & back to top ---------- */
+    .toast {
+      position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 140px);
+      background: var(--navy); color: #fff; padding: 12px 20px; border-radius: 11px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); font-weight: 500;
+      transition: transform 0.3s ease; z-index: 400; max-width: calc(100% - 32px); text-align: center;
+    }
+
+    .toast.show { transform: translate(-50%, 0); }
+
+    .to-top {
+      position: fixed; right: 20px; bottom: 20px; z-index: 90;
+      width: 46px; height: 46px; border-radius: 50%; border: 0;
+      background: var(--gold); color: var(--navy); font-size: 1.2rem; cursor: pointer;
+      box-shadow: var(--shadow-lg); opacity: 0; pointer-events: none; transition: opacity 0.25s;
+    }
+
+    .to-top.visible { opacity: 1; pointer-events: auto; }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 980px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .register-wrap { grid-template-columns: 1fr; }
+      .testimonials { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 820px) {
+      .menu-toggle { display: grid; }
+
+      .nav-links {
+        position: absolute; top: 70px; left: 0; right: 0;
+        flex-direction: column; gap: 0;
+        background: var(--navy); padding: 8px 16px 16px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+        display: none;
+      }
+
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 12px 14px; }
+
+      .hero { padding: 64px 0 96px; }
+      section { padding: 64px 0; }
+      .form-card { padding: 22px; }
+    }
+
+    @media (max-width: 560px) {
+      .container { padding: 0 16px; }
+      .logo-text { display: none; }
+      .stats { gap: 12px; }
+      .stat { padding: 16px 10px; }
+      .stat strong { font-size: 1.5rem; }
+      .hero-actions .btn { flex: 1; }
+      .form-row { grid-template-columns: 1fr; gap: 0; }
+      .steps { grid-template-columns: 1fr; }
+      .sort-select { width: 100%; }
+      .favorite-item { flex-direction: column; align-items: flex-start; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a href="#home" class="logo"><span class="logo-mark">N</span><span class="logo-text">Northbridge University</span></a>
+      <div class="nav-right">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#home" class="active">Home</a></li>
+          <li><a href="#courses">Courses</a></li>
+          <li><a href="#favorites">Favorites <span class="badge" id="favCount">0</span></a></li>
+          <li><a href="#register">Register</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+        <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Home -->
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Fall 2026 enrollment is open</span>
+          <h1>Shape your future at <em>Northbridge</em> University</h1>
+          <p>Explore world-class courses taught by leading faculty, save the ones you love, and register for the new semester in minutes.</p>
+          <div class="hero-actions">
+            <a href="#courses" class="btn btn-primary">Browse Courses</a>
+            <a href="#register" class="btn btn-outline">Register Now</a>
+          </div>
+        </div>
+        <aside class="hero-card" aria-label="Upcoming events">
+          <h3>Upcoming events</h3>
+          <ul>
+            <li><span class="date"><b>24</b>OCT</span><span><strong>Campus Open Day</strong><br>Tour the labs, library, and dorms.</span></li>
+            <li><span class="date"><b>07</b>NOV</span><span><strong>Scholarship Info Session</strong><br>Learn about merit and need-based aid.</span></li>
+            <li><span class="date"><b>15</b>DEC</span><span><strong>Registration Deadline</strong><br>Last day to enroll for Spring 2027.</span></li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="stats">
+        <div class="stat"><strong data-count="12000" data-suffix="+">0</strong><span>Students</span></div>
+        <div class="stat"><strong data-count="450">0</strong><span>Faculty members</span></div>
+        <div class="stat"><strong data-count="120">0</strong><span>Degree programs</span></div>
+        <div class="stat"><strong data-count="94" data-suffix="%">0</strong><span>Graduate employment</span></div>
+      </div>
+    </div>
+
+    <!-- Course Catalog -->
+    <section id="courses">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">Academics</span>
+          <h2>Course Catalog</h2>
+          <p>Search by title, code, instructor, or department. Filter by department, save favorites, and enroll in a click.</p>
+        </div>
+
+        <div class="toolbar">
+          <div class="search-row">
+            <form class="search-bar" id="searchForm" role="search">
+              <span aria-hidden="true">🔍</span>
+              <label for="searchInput" class="sr-only">Search courses</label>
+              <input type="search" id="searchInput" placeholder="Search courses, e.g. Chemistry or Dr. Chen" autocomplete="off">
+              <button type="button" class="clear-search" id="clearSearch" aria-label="Clear search">✕</button>
+            </form>
+            <label for="sortSelect" class="sr-only">Sort courses</label>
+            <select id="sortSelect" class="sort-select">
+              <option value="default">Sort: Featured</option>
+              <option value="title">Sort: Title A–Z</option>
+              <option value="credits">Sort: Credits (high → low)</option>
+              <option value="seats">Sort: Seats available</option>
+            </select>
+          </div>
+          <div class="chips" id="deptChips" role="group" aria-label="Filter by department"></div>
+          <p class="results-info" id="resultsInfo" aria-live="polite"></p>
+        </div>
+
+        <div class="course-grid" id="courseGrid"></div>
+      </div>
+    </section>
+
+    <!-- Favorites -->
+    <section id="favorites" class="alt">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">Saved for later</span>
+          <h2>My Favorites</h2>
+          <p>Your saved courses are remembered on this device.</p>
+        </div>
+        <div class="favorites-head">
+          <button type="button" class="btn btn-ghost" id="clearFavorites" hidden>Clear all</button>
+        </div>
+        <ul class="favorites-list" id="favoritesList"></ul>
+      </div>
+    </section>
+
+    <!-- Registration -->
+    <section id="register">
+      <div class="container register-wrap">
+        <div class="register-info">
+          <span class="kicker-inline">Admissions</span>
+          <h2>Student Registration</h2>
+          <p>Reserve your seat for the upcoming semester. Fill in your details and choose a course to get started.</p>
+          <ul>
+            <li>Instant confirmation of your registration</li>
+            <li>Access to course materials before classes begin</li>
+            <li>Personal academic advisor for every new student</li>
+          </ul>
+          <div class="steps">
+            <div class="step"><b>1</b>Pick a course from the catalog</div>
+            <div class="step"><b>2</b>Fill in your details</div>
+            <div class="step"><b>3</b>Get your confirmation</div>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <form id="registrationForm" novalidate>
+            <div class="form-row">
+              <div class="form-group" id="nameGroup">
+                <label for="studentName">Full name</label>
+                <input type="text" id="studentName" name="name" placeholder="Jane Smith" autocomplete="name">
+                <div class="error-msg">Please enter your full name (at least 2 characters).</div>
+              </div>
+
+              <div class="form-group" id="emailGroup">
+                <label for="studentEmail">Email address</label>
+                <input type="email" id="studentEmail" name="email" placeholder="jane@example.com" autocomplete="email">
+                <div class="error-msg">Please enter a valid email address.</div>
+              </div>
+            </div>
+
+            <div class="form-group" id="courseGroup">
+              <label for="courseSelect">Course</label>
+              <select id="courseSelect" name="course">
+                <option value="">Select a course</option>
+              </select>
+              <div class="error-msg">Please select a course.</div>
+            </div>
+
+            <div class="form-group">
+              <label>Study mode</label>
+              <div class="radio-row">
+                <label><input type="radio" name="mode" value="On campus" checked> 🏛️ On campus</label>
+                <label><input type="radio" name="mode" value="Online"> 💻 Online</label>
+              </div>
+            </div>
+
+            <div class="form-group" id="termsGroup">
+              <label class="check-label">
+                <input type="checkbox" id="termsCheck">
+                <span>I confirm my details are correct and agree to the student code of conduct.</span>
+              </label>
+              <div class="error-msg">Please confirm to continue.</div>
+            </div>
+
+            <button type="submit" class="btn btn-dark submit-btn">Register</button>
+          </form>
+
+          <div class="success-box" id="successBox" role="status" aria-live="polite">
+            <strong>🎉 Registration successful!</strong>
+            <dl>
+              <dt>Name</dt><dd id="confirmName"></dd>
+              <dt>Email</dt><dd id="confirmEmail"></dd>
+              <dt>Course</dt><dd id="confirmCourse"></dd>
+              <dt>Mode</dt><dd id="confirmMode"></dd>
+            </dl>
+          </div>
+
+          <div class="registrations" id="registrationsWrap" hidden>
+            <h3>Recent registrations</h3>
+            <ul id="registrationsList"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="alt" aria-labelledby="studentsTitle">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">Student life</span>
+          <h2 id="studentsTitle">What our students say</h2>
+        </div>
+        <div class="testimonials">
+          <figure class="quote">
+            <p>The Data Structures course completely changed how I approach problems. The professors genuinely care.</p>
+            <footer><span class="avatar" style="background:#3b4f9c">AK</span><span><strong>Amir K.</strong><small>Computer Science, Year 2</small></span></footer>
+          </figure>
+          <figure class="quote">
+            <p>Small class sizes and amazing labs. I got a research assistant position in my first year!</p>
+            <footer><span class="avatar" style="background:#1f8a7a">SL</span><span><strong>Sofia L.</strong><small>Chemistry, Year 3</small></span></footer>
+          </figure>
+          <figure class="quote">
+            <p>Registering was effortless, and my academic advisor helped me plan the perfect schedule.</p>
+            <footer><span class="avatar" style="background:#c2185b">DM</span><span><strong>Daniel M.</strong><small>Psychology, Year 1</small></span></footer>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker">Help</span>
+          <h2>Frequently asked questions</h2>
+        </div>
+        <div class="faq">
+          <details>
+            <summary>When does the Fall 2026 semester start?</summary>
+            <p>Classes begin on September 1, 2026. Orientation week runs from August 24 to August 28.</p>
+          </details>
+          <details>
+            <summary>Can I register for more than one course?</summary>
+            <p>Yes. Submit the registration form once for each course you want to take.</p>
+          </details>
+          <details>
+            <summary>Are online study options available?</summary>
+            <p>Most courses offer an online mode with live-streamed lectures and recorded sessions. Choose "Online" when registering.</p>
+          </details>
+          <details>
+            <summary>How do I contact the admissions office?</summary>
+            <p>Email admissions@northbridge.edu or call +1 (555) 012-3400, Monday to Friday, 9:00–17:00.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="logo"><span class="logo-mark">N</span> Northbridge University</div>
+          <p>Educating curious minds since 1891. 100 College Avenue, Northbridge.</p>
+        </div>
+        <div>
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="#courses">Course Catalog</a></li>
+            <li><a href="#favorites">My Favorites</a></li>
+            <li><a href="#register">Registration</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="mailto:admissions@northbridge.edu">Admissions</a></li>
+            <li><a href="tel:+15550123400">+1 (555) 012-3400</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Follow us</h4>
+          <ul>
+            <li>Instagram</li>
+            <li>LinkedIn</li>
+            <li>YouTube</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Northbridge University. All rights reserved.</span>
+        <span>Made for learning 🎓</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Course details modal -->
+  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" id="modal"></div>
+  </div>
+
+  <button class="to-top" id="toTop" aria-label="Back to top">↑</button>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const courses = [
+      { id: 1, code: "CS 101", title: "Introduction to Computer Science", dept: "Computer Science", icon: "💻", color: "#2c5596",
+        description: "Learn the fundamentals of programming, problem solving, and computational thinking.",
+        instructor: "Dr. Alan Reyes", credits: 4, schedule: "Mon / Wed", seats: 18, capacity: 60,
+        topics: ["Variables, loops, and functions", "Problem decomposition", "Intro to Python"] },
+      { id: 2, code: "CS 201", title: "Data Structures and Algorithms", dept: "Computer Science", icon: "🧮", color: "#3b4f9c",
+        description: "Study lists, trees, graphs, sorting, and searching, and analyze algorithm efficiency.",
+        instructor: "Dr. Priya Nair", credits: 4, schedule: "Tue / Thu", seats: 6, capacity: 45,
+        topics: ["Big-O analysis", "Trees and graphs", "Sorting and searching algorithms"] },
+      { id: 3, code: "CHEM 210", title: "Organic Chemistry", dept: "Sciences", icon: "🧪", color: "#1f8a7a",
+        description: "Explore the structure, properties, and reactions of carbon-based compounds.",
+        instructor: "Prof. Linda Osei", credits: 4, schedule: "Mon / Wed / Fri", seats: 22, capacity: 40,
+        topics: ["Functional groups", "Reaction mechanisms", "Lab safety and techniques"] },
+      { id: 4, code: "MATH 151", title: "Calculus I", dept: "Mathematics", icon: "📐", color: "#8e44ad",
+        description: "Limits, derivatives, and integrals with applications in science and engineering.",
+        instructor: "Dr. Marco Bianchi", credits: 3, schedule: "Tue / Thu", seats: 31, capacity: 80,
+        topics: ["Limits and continuity", "Derivatives and applications", "Definite integrals"] },
+      { id: 5, code: "ECON 101", title: "Principles of Microeconomics", dept: "Business", icon: "📈", color: "#c0792b",
+        description: "Understand how individuals and firms make decisions about scarce resources.",
+        instructor: "Prof. Sarah Kim", credits: 3, schedule: "Mon / Wed", seats: 4, capacity: 70,
+        topics: ["Supply and demand", "Market structures", "Consumer choice"] },
+      { id: 6, code: "HIST 120", title: "Modern World History", dept: "Humanities", icon: "🌍", color: "#a0522d",
+        description: "Trace the major political, economic, and cultural events that shaped the modern world.",
+        instructor: "Dr. James O'Connor", credits: 3, schedule: "Fri", seats: 27, capacity: 50,
+        topics: ["Industrial revolution", "World wars", "Globalization"] },
+      { id: 7, code: "PSY 100", title: "General Psychology", dept: "Sciences", icon: "🧠", color: "#c2185b",
+        description: "An introduction to behavior, cognition, emotion, and the science of the mind.",
+        instructor: "Dr. Emily Chen", credits: 3, schedule: "Tue / Thu", seats: 12, capacity: 90,
+        topics: ["Memory and learning", "Development", "Social psychology"] },
+      { id: 8, code: "ENG 230", title: "Creative Writing Workshop", dept: "Humanities", icon: "✍️", color: "#2e7d32",
+        description: "Develop your voice in fiction and poetry through weekly writing and peer review.",
+        instructor: "Prof. Hannah Ward", credits: 3, schedule: "Wed", seats: 9, capacity: 20,
+        topics: ["Short fiction", "Poetry forms", "Peer workshops"] },
+      { id: 9, code: "BUS 210", title: "Marketing Fundamentals", dept: "Business", icon: "📣", color: "#d35400",
+        description: "Learn how brands research customers, position products, and build campaigns.",
+        instructor: "Prof. Omar Haddad", credits: 3, schedule: "Thu", seats: 15, capacity: 55,
+        topics: ["Market research", "Branding and positioning", "Digital campaigns"] }
+    ];
+
+    const STORAGE_KEYS = { favorites: "nbu-favorites", theme: "nbu-theme", registrations: "nbu-registrations" };
+
+    // ---------- Safe storage helpers ----------
+    function loadJSON(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch {
+        return fallback;
+      }
+    }
+
+    function saveJSON(key, value) {
+      try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* storage unavailable */ }
+    }
+
+    function escapeHTML(str) {
+      return String(str).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+    }
+
+    const validIds = new Set(courses.map(c => c.id));
+    let favorites = loadJSON(STORAGE_KEYS.favorites, []).filter(id => validIds.has(id));
+    let registrations = loadJSON(STORAGE_KEYS.registrations, []);
+    let activeDept = "All";
+
+    const $ = id => document.getElementById(id);
+    const courseGrid = $("courseGrid");
+    const resultsInfo = $("resultsInfo");
+    const searchInput = $("searchInput");
+    const clearSearchBtn = $("clearSearch");
+    const sortSelect = $("sortSelect");
+    const deptChips = $("deptChips");
+    const favoritesList = $("favoritesList");
+    const favCount = $("favCount");
+    const clearFavoritesBtn = $("clearFavorites");
+    const courseSelect = $("courseSelect");
+    const toastEl = $("toast");
+
+    const getCourse = id => courses.find(c => c.id === id);
+    const isFavorite = id => favorites.includes(id);
+
+    // ---------- Theme ----------
+    const themeToggle = $("themeToggle");
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+      themeToggle.textContent = theme === "dark" ? "☀️" : "🌙";
+      themeToggle.setAttribute("aria-label", theme === "dark" ? "Switch to light mode" : "Switch to dark mode");
+    }
+
+    const savedTheme = loadJSON(STORAGE_KEYS.theme, null);
+    applyTheme(savedTheme || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
+
+    themeToggle.addEventListener("click", () => {
+      const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      applyTheme(next);
+      saveJSON(STORAGE_KEYS.theme, next);
+    });
+
+    // ---------- Catalog ----------
+    function seatsMarkup(course) {
+      const pct = Math.round((course.seats / course.capacity) * 100);
+      const low = course.seats <= 10;
+      return `
+        <div class="seats ${low ? "low" : ""}">
+          ${low ? "⚡ Only " : ""}${course.seats} of ${course.capacity} seats available
+          <div class="seats-bar"><span style="width:${pct}%"></span></div>
+        </div>`;
+    }
+
+    function createCourseCard(course, index) {
+      const fav = isFavorite(course.id);
+      const card = document.createElement("article");
+      card.className = "course-card";
+      card.style.animationDelay = `${index * 40}ms`;
+      card.innerHTML = `
+        <div class="course-banner" style="background: linear-gradient(135deg, ${course.color}, ${course.color}bb);">
+          <span aria-hidden="true">${course.icon}</span>
+          <span class="course-code">${course.code}</span>
+          <button type="button" class="fav-toggle" aria-label="${fav ? "Remove from" : "Add to"} favorites" aria-pressed="${fav}">${fav ? "♥" : "♡"}</button>
+        </div>
+        <div class="course-body">
+          <div class="course-dept">${course.dept}</div>
+          <h3>${course.title}</h3>
+          <p>${course.description}</p>
+          <div class="course-meta">
+            <span>👤 ${course.instructor}</span>
+            <span>🎓 ${course.credits} credits</span>
+            <span>📅 ${course.schedule}</span>
+          </div>
+          ${seatsMarkup(course)}
+          <div class="course-actions">
+            <button type="button" class="btn btn-fav" aria-pressed="${fav}">${fav ? "✓ In Favorites" : "☆ Add to Favorites"}</button>
+            <button type="button" class="btn btn-ghost btn-details">Details</button>
+            <button type="button" class="btn btn-dark btn-enroll">Enroll</button>
+          </div>
+        </div>`;
+
+      card.querySelector(".btn-fav").addEventListener("click", () => toggleFavorite(course.id));
+      card.querySelector(".fav-toggle").addEventListener("click", () => toggleFavorite(course.id));
+      card.querySelector(".btn-details").addEventListener("click", () => openModal(course.id));
+      card.querySelector(".btn-enroll").addEventListener("click", () => enrollInCourse(course.id));
+      return card;
+    }
+
+    function filterCourses(query, dept) {
+      const term = query.trim().toLowerCase();
+      return courses.filter(course => {
+        const inDept = dept === "All" || course.dept === dept;
+        if (!inDept) return false;
+        if (!term) return true;
+        const haystack = [course.title, course.code, course.instructor, course.dept, course.description].join(" ").toLowerCase();
+        return term.split(/\s+/).every(word => haystack.includes(word));
+      });
+    }
+
+    function sortCourses(list, mode) {
+      const sorted = [...list];
+      if (mode === "title") sorted.sort((a, b) => a.title.localeCompare(b.title));
+      if (mode === "credits") sorted.sort((a, b) => b.credits - a.credits || a.title.localeCompare(b.title));
+      if (mode === "seats") sorted.sort((a, b) => b.seats - a.seats);
+      return sorted;
+    }
+
+    function renderCourses() {
+      const query = searchInput.value;
+      const list = sortCourses(filterCourses(query, activeDept), sortSelect.value);
+      courseGrid.innerHTML = "";
+      clearSearchBtn.classList.toggle("visible", query.length > 0);
+
+      if (list.length === 0) {
+        courseGrid.innerHTML = `
+          <div class="empty-state">
+            <div class="icon">🔎</div>
+            <p>No courses match your search. Try a different keyword or department.</p>
+            <button type="button" class="btn btn-ghost" id="resetFilters">Reset filters</button>
+          </div>`;
+        $("resetFilters").addEventListener("click", resetFilters);
+      } else {
+        list.forEach((course, i) => courseGrid.appendChild(createCourseCard(course, i)));
+      }
+
+      const trimmed = query.trim();
+      let info = `Showing ${list.length} of ${courses.length} courses`;
+      if (activeDept !== "All") info += ` in ${activeDept}`;
+      if (trimmed) info += ` for "${trimmed}"`;
+      resultsInfo.textContent = info;
+    }
+
+    function renderChips() {
+      const depts = ["All", ...new Set(courses.map(c => c.dept))];
+      deptChips.innerHTML = "";
+      depts.forEach(dept => {
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "chip";
+        chip.textContent = dept;
+        chip.setAttribute("aria-pressed", String(dept === activeDept));
+        chip.addEventListener("click", () => {
+          activeDept = dept;
+          renderChips();
+          renderCourses();
+        });
+        deptChips.appendChild(chip);
+      });
+    }
+
+    function resetFilters() {
+      searchInput.value = "";
+      activeDept = "All";
+      sortSelect.value = "default";
+      renderChips();
+      renderCourses();
+      searchInput.focus();
+    }
+
+    $("searchForm").addEventListener("submit", event => {
+      event.preventDefault();
+      renderCourses();
+    });
+
+    searchInput.addEventListener("input", renderCourses);
+    sortSelect.addEventListener("change", renderCourses);
+
+    clearSearchBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      renderCourses();
+      searchInput.focus();
+    });
+
+    // ---------- Favorites ----------
+    function toggleFavorite(courseId) {
+      const course = getCourse(courseId);
+      if (!course) return;
+
+      if (isFavorite(courseId)) {
+        favorites = favorites.filter(id => id !== courseId);
+        showToast(`Removed "${course.title}" from favorites`);
+      } else {
+        favorites = [...favorites, courseId];
+        showToast(`Added "${course.title}" to favorites ♥`);
+      }
+
+      saveJSON(STORAGE_KEYS.favorites, favorites);
+      renderFavorites();
+      renderCourses();
+      if ($("modalBackdrop").classList.contains("open")) openModal(courseId);
+    }
+
+    function renderFavorites() {
+      favoritesList.innerHTML = "";
+      favCount.textContent = favorites.length;
+      clearFavoritesBtn.hidden = favorites.length === 0;
+
+      if (favorites.length === 0) {
+        favoritesList.innerHTML = `
+          <li class="empty-state">
+            <div class="icon">⭐</div>
+            <p>You haven't saved any courses yet. Tap "Add to Favorites" or the ♡ on a course to save it here.</p>
+          </li>`;
+        return;
+      }
+
+      favorites.map(getCourse).forEach(course => {
+        const item = document.createElement("li");
+        item.className = "favorite-item";
+        item.innerHTML = `
+          <div class="fi-main">
+            <span class="fi-icon" aria-hidden="true">${course.icon}</span>
+            <div>
+              <strong>${course.title}</strong>
+              <small>${course.code} · ${course.instructor} · ${course.credits} credits</small>
+            </div>
+          </div>
+          <div class="fi-actions">
+            <button type="button" class="btn btn-dark btn-enroll">Enroll</button>
+            <button type="button" class="btn btn-remove">Remove</button>
+          </div>`;
+        item.querySelector(".btn-enroll").addEventListener("click", () => enrollInCourse(course.id));
+        item.querySelector(".btn-remove").addEventListener("click", () => toggleFavorite(course.id));
+        favoritesList.appendChild(item);
+      });
+    }
+
+    clearFavoritesBtn.addEventListener("click", () => {
+      favorites = [];
+      saveJSON(STORAGE_KEYS.favorites, favorites);
+      renderFavorites();
+      renderCourses();
+      showToast("All favorites cleared");
+    });
+
+    // ---------- Course details modal ----------
+    const modalBackdrop = $("modalBackdrop");
+    const modal = $("modal");
+    let lastFocused = null;
+
+    function openModal(courseId) {
+      const course = getCourse(courseId);
+      if (!course) return;
+      const fav = isFavorite(courseId);
+      if (!modalBackdrop.classList.contains("open")) lastFocused = document.activeElement;
+
+      modal.innerHTML = `
+        <div class="course-banner" style="background: linear-gradient(135deg, ${course.color}, ${course.color}bb);">
+          <span aria-hidden="true">${course.icon}</span>
+          <span class="course-code">${course.code}</span>
+          <button type="button" class="modal-close" aria-label="Close details">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="course-dept">${course.dept}</div>
+          <h3 id="modalTitle">${course.title}</h3>
+          <p>${course.description}</p>
+          <div class="course-meta">
+            <span>👤 ${course.instructor}</span>
+            <span>🎓 ${course.credits} credits</span>
+            <span>📅 ${course.schedule}</span>
+          </div>
+          ${seatsMarkup(course)}
+          <h4>What you'll learn</h4>
+          <ul>${course.topics.map(t => `<li>${t}</li>`).join("")}</ul>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-fav" aria-pressed="${fav}">${fav ? "✓ In Favorites" : "☆ Add to Favorites"}</button>
+            <button type="button" class="btn btn-dark btn-enroll">Enroll now</button>
+          </div>
+        </div>`;
+
+      modal.querySelector(".modal-close").addEventListener("click", closeModal);
+      modal.querySelector(".btn-fav").addEventListener("click", () => toggleFavorite(courseId));
+      modal.querySelector(".btn-enroll").addEventListener("click", () => {
+        closeModal();
+        enrollInCourse(courseId);
+      });
+
+      modalBackdrop.classList.add("open");
+      modalBackdrop.setAttribute("aria-hidden", "false");
+      document.body.classList.add("modal-open");
+      modal.querySelector(".modal-close").focus();
+    }
+
+    function closeModal() {
+      modalBackdrop.classList.remove("open");
+      modalBackdrop.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("modal-open");
+      if (lastFocused && document.contains(lastFocused)) lastFocused.focus({ preventScroll: true });
+    }
+
+    modalBackdrop.addEventListener("click", event => {
+      if (event.target === modalBackdrop) closeModal();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && modalBackdrop.classList.contains("open")) closeModal();
+    });
+
+    // ---------- Registration ----------
+    function populateCourseSelect() {
+      courses.forEach(course => {
+        const option = document.createElement("option");
+        option.value = course.id;
+        option.textContent = `${course.code} — ${course.title}`;
+        courseSelect.appendChild(option);
+      });
+    }
+
+    function enrollInCourse(courseId) {
+      courseSelect.value = String(courseId);
+      $("courseGroup").classList.remove("invalid");
+      $("register").scrollIntoView({ behavior: "smooth" });
+      setTimeout(() => $("studentName").focus({ preventScroll: true }), 500);
+      showToast(`${getCourse(courseId).title} selected — complete the form to enroll`);
+    }
+
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+    }
+
+    function setFieldState(groupId, isValid) {
+      $(groupId).classList.toggle("invalid", !isValid);
+      return isValid;
+    }
+
+    function renderRegistrations() {
+      const list = $("registrationsList");
+      $("registrationsWrap").hidden = registrations.length === 0;
+      list.innerHTML = registrations
+        .slice(-5)
+        .reverse()
+        .map(r => `<li><span><strong>${escapeHTML(r.name)}</strong> · ${escapeHTML(r.courseCode)}</span><span>${escapeHTML(r.mode)}</span></li>`)
+        .join("");
+    }
+
+    const registrationForm = $("registrationForm");
+    const successBox = $("successBox");
+
+    registrationForm.addEventListener("submit", event => {
+      event.preventDefault();
+
+      const name = $("studentName").value.trim();
+      const email = $("studentEmail").value.trim();
+      const courseId = courseSelect.value;
+      const mode = registrationForm.querySelector('input[name="mode"]:checked').value;
+      const agreed = $("termsCheck").checked;
+
+      const results = [
+        setFieldState("nameGroup", name.length >= 2),
+        setFieldState("emailGroup", isValidEmail(email)),
+        setFieldState("courseGroup", courseId !== ""),
+        setFieldState("termsGroup", agreed)
+      ];
+
+      if (results.includes(false)) {
+        successBox.classList.remove("show");
+        registrationForm.querySelector(".form-group.invalid input, .form-group.invalid select")?.focus();
+        return;
+      }
+
+      const course = getCourse(Number(courseId));
+      const duplicate = registrations.some(r => r.email.toLowerCase() === email.toLowerCase() && r.courseId === course.id);
+      if (duplicate) {
+        showToast(`${email} is already registered for ${course.code}`);
+        return;
+      }
+
+      registrations.push({ name, email, courseId: course.id, courseCode: course.code, mode, date: new Date().toISOString() });
+      saveJSON(STORAGE_KEYS.registrations, registrations);
+
+      $("confirmName").textContent = name;
+      $("confirmEmail").textContent = email;
+      $("confirmCourse").textContent = `${course.code} — ${course.title}`;
+      $("confirmMode").textContent = mode;
+      successBox.classList.add("show");
+      showToast(`Welcome aboard, ${name}! 🎓`);
+      registrationForm.reset();
+      renderRegistrations();
+    });
+
+    ["studentName", "studentEmail", "courseSelect", "termsCheck"].forEach(id => {
+      const field = $(id);
+      const clear = () => field.closest(".form-group").classList.remove("invalid");
+      field.addEventListener("input", clear);
+      field.addEventListener("change", clear);
+    });
+
+    // ---------- Navigation ----------
+    const menuToggle = $("menuToggle");
+    const navLinks = $("navLinks");
+
+    function setMenu(open) {
+      navLinks.classList.toggle("open", open);
+      menuToggle.setAttribute("aria-expanded", String(open));
+      menuToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      menuToggle.textContent = open ? "✕" : "☰";
+    }
+
+    menuToggle.addEventListener("click", () => setMenu(!navLinks.classList.contains("open")));
+    navLinks.querySelectorAll("a").forEach(link => link.addEventListener("click", () => setMenu(false)));
+
+    const sectionObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        navLinks.querySelectorAll("a").forEach(link => {
+          link.classList.toggle("active", link.getAttribute("href") === `#${entry.target.id}`);
+        });
+      });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+
+    ["home", "courses", "favorites", "register", "faq"].forEach(id => sectionObserver.observe($(id)));
+
+    // ---------- Back to top ----------
+    const toTop = $("toTop");
+    window.addEventListener("scroll", () => toTop.classList.toggle("visible", window.scrollY > 600), { passive: true });
+    toTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+    // ---------- Animated stats ----------
+    function animateCount(el) {
+      const target = Number(el.dataset.count);
+      const suffix = el.dataset.suffix || "";
+      const format = n => (target >= 1000 ? `${Math.round(n / 1000)}k` : String(Math.round(n))) + suffix;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        el.textContent = format(target);
+        return;
+      }
+      const start = performance.now();
+      const duration = 1200;
+      const step = now => {
+        const t = Math.min((now - start) / duration, 1);
+        el.textContent = format(target * (1 - Math.pow(1 - t, 3)));
+        if (t < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }
+
+    const statsObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        animateCount(entry.target);
+        statsObserver.unobserve(entry.target);
+      });
+    });
+
+    document.querySelectorAll("[data-count]").forEach(el => statsObserver.observe(el));
+
+    // ---------- Toast ----------
+    let toastTimer;
+    function showToast(message) {
+      toastEl.textContent = message;
+      toastEl.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove("show"), 2600);
+    }
+
+    // ---------- Init ----------
+    renderChips();
+    renderCourses();
+    renderFavorites();
+    populateCourseSelect();
+    renderRegistrations();
+  </script>
+</body>
+</html>
